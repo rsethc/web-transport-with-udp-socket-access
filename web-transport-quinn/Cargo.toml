@@ -28,7 +28,7 @@ log = "0.4"
 
 
 #quinn = { version = "0.11", default-features = false, features = [
-quinn = { git = "ssh://git@github.com/rsethc/quinn-with-udp-socket-access.git", branch = "with-udp-socket-access", default-features = false, features = [
+quinn = { git = "https://github.com/rsethc/quinn-with-udp-socket-access.git", branch = "with-udp-socket-access", default-features = false, features = [
 #quinn = { path = "../../quinn-with-udp-socket-access/quinn", default-features = false, features = [
     "platform-verifier",
     "runtime-tokio",
