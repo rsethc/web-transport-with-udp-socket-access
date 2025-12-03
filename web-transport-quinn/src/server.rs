@@ -2,6 +2,7 @@
 use std::sync::Arc;
 
 use futures::{future::BoxFuture, stream::FuturesUnordered, StreamExt};
+use quinn::AsyncUdpSocket;
 #[cfg(any(feature = "aws-lc-rs", feature = "ring"))]
 use rustls::pki_types::{CertificateDer, PrivateKeyDer};
 use url::Url;
@@ -92,6 +93,11 @@ pub struct Server {
 }
 
 impl Server {
+    /// The raw socket. Useful for hole punching from a server, but use with caution.
+    pub fn use_raw_socket(&self, callback: impl Fn(&dyn AsyncUdpSocket)) {
+        self.endpoint.use_raw_socket(callback);
+    }
+
     /// Manaully create a new server with a manually constructed Endpoint.
     ///
     /// NOTE: The ALPN must be set to `crate::ALPN` for WebTransport to work.
