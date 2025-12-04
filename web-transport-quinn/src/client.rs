@@ -1,4 +1,6 @@
+use std::cell::{Cell, RefCell};
 use std::net::{IpAddr, SocketAddr};
+use std::rc::Rc;
 use std::sync::Arc;
 
 #[cfg(any(feature = "aws-lc-rs", feature = "ring"))]
@@ -214,11 +216,14 @@ pub struct Client {
 
 impl Client {
     fn local_port(&self) -> u16 {
-        let mut local_port = None;
-        self.endpoint.use_raw_socket(|socket| { 
-            local_port = Some(socket.get_local_port());
+        let local_port = Rc::new(Cell::new(None));
+        self.endpoint.use_raw_socket({
+            let local_port = local_port.clone();
+            move |socket| { 
+                local_port.set(Some(socket.get_local_port()));
+            }
         });
-        local_port.unwrap()
+        local_port.get().unwrap()
     }
 
     /// Manually create a client via a Quinn endpoint and config.
