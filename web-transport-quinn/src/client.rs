@@ -213,6 +213,14 @@ pub struct Client {
 }
 
 impl Client {
+    fn local_port(&self) -> u16 {
+        let mut local_port = None;
+        self.endpoint.use_raw_socket(|socket| { 
+            local_port = Some(socket.get_local_port());
+        });
+        local_port.unwrap()
+    }
+
     /// Manually create a client via a Quinn endpoint and config.
     ///
     /// The ALPN MUST be set to [ALPN].
