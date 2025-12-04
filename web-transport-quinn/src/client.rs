@@ -215,7 +215,7 @@ pub struct Client {
 }
 
 impl Client {
-    fn local_port(&self) -> u16 {
+    pub fn get_local_port(&self) -> u16 {
         let local_port = Rc::new(Cell::new(None));
         self.endpoint.use_raw_socket({
             let local_port = local_port.clone();
