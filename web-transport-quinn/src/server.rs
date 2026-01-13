@@ -2,7 +2,7 @@
 use std::sync::Arc;
 
 use futures::{future::BoxFuture, stream::FuturesUnordered, StreamExt};
-use quinn::AsyncUdpSocket;
+use quinn::{AsyncUdpSocket, Endpoint};
 #[cfg(any(feature = "aws-lc-rs", feature = "ring"))]
 use rustls::pki_types::{CertificateDer, PrivateKeyDer};
 use url::Url;
@@ -93,9 +93,8 @@ pub struct Server {
 }
 
 impl Server {
-    /// The raw socket. Useful for hole punching from a server, but use with caution.
-    pub fn use_raw_socket(&self, callback: impl Fn(&dyn AsyncUdpSocket)) {
-        self.endpoint.use_raw_socket(callback);
+    pub fn endpoint(&self) -> &Endpoint {
+        &self.endpoint
     }
 
     /// Manaully create a new server with a manually constructed Endpoint.
