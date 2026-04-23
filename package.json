@@ -3,14 +3,17 @@
 	"private": true,
 	"type": "module",
 	"workspaces": [
-		"web-demo",
-		"web-transport-ws"
+		"js/qmux",
+		"js/web-demo",
+		"js/web-transport",
+		"js/web-transport-ws"
 	],
 	"scripts": {
 		"check": "biome check",
 		"fix": "biome check --fix"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.2.2"
+		"@biomejs/biome": "^2.2.2",
+		"publint": "^0.3.18"
 	}
 }

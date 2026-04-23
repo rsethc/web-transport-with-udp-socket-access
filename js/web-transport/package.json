@@ -1,0 +1,52 @@
+{
+	"name": "@moq/web-transport",
+	"version": "0.1.1",
+	"description": "WebTransport polyfill for Node.js via QUIC/HTTP3",
+	"type": "module",
+	"license": "(MIT OR Apache-2.0)",
+	"repository": "github:moq-dev/web-transport",
+	"napi": {
+		"binaryName": "web-transport",
+		"targets": [
+			"x86_64-apple-darwin",
+			"aarch64-apple-darwin",
+			"x86_64-pc-windows-msvc",
+			"x86_64-unknown-linux-gnu",
+			"aarch64-unknown-linux-gnu"
+		]
+	},
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"types": "./src/index.ts",
+	"files": [
+		"./src",
+		"napi.js",
+		"napi.d.ts",
+		"*.node"
+	],
+	"scripts": {
+		"build": "napi build --platform --release --manifest-path ../../rs/web-transport-node/Cargo.toml --output-dir . --js napi.js --dts napi.d.ts",
+		"check": "tsc --noEmit",
+		"release": "bun scripts/release.ts"
+	},
+	"devDependencies": {
+		"@napi-rs/cli": "^3",
+		"typescript": "^5.9.2",
+		"@types/node": "^24.3.0"
+	},
+	"optionalDependencies": {
+		"@moq/web-transport-darwin-x64": "0.1.1",
+		"@moq/web-transport-darwin-arm64": "0.1.1",
+		"@moq/web-transport-win32-x64-msvc": "0.1.1",
+		"@moq/web-transport-linux-x64-gnu": "0.1.1",
+		"@moq/web-transport-linux-arm64-gnu": "0.1.1"
+	},
+	"keywords": [
+		"webtransport",
+		"quic",
+		"http3",
+		"polyfill",
+		"napi"
+	]
+}
