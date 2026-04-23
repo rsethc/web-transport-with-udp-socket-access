@@ -2,6 +2,7 @@
 use std::sync::Arc;
 
 use futures::{future::BoxFuture, stream::FuturesUnordered, StreamExt};
+use quinn::{AsyncUdpSocket, Endpoint};
 #[cfg(any(feature = "aws-lc-rs", feature = "ring"))]
 use rustls::pki_types::{CertificateDer, PrivateKeyDer};
 
@@ -102,6 +103,10 @@ impl core::ops::Deref for Server {
 }
 
 impl Server {
+    pub fn endpoint(&self) -> &Endpoint {
+        &self.endpoint
+    }
+
     /// Manually create a new server with a manually constructed Endpoint.
     ///
     /// NOTE: The ALPN must be set to `crate::ALPN` for WebTransport to work.

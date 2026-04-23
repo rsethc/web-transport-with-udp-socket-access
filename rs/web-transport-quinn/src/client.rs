@@ -1,6 +1,9 @@
+use std::cell::{Cell, RefCell};
 use std::net::{IpAddr, SocketAddr};
+use std::rc::Rc;
 use std::sync::Arc;
 
+use quinn::AsyncUdpSocket;
 use crate::proto::ConnectRequest;
 #[cfg(any(feature = "aws-lc-rs", feature = "ring"))]
 use quinn::crypto::rustls::QuicClientConfig;
@@ -206,6 +209,22 @@ pub struct Client {
 }
 
 impl Client {
+    /// The raw socket. Useful for hole punching from a server, but use with caution.
+    pub fn use_raw_socket(&self, callback: impl Fn(&dyn AsyncUdpSocket)) {
+        self.endpoint.use_raw_socket(callback);
+    }
+
+    pub fn get_local_port(&self) -> u16 {
+        let local_port = Rc::new(Cell::new(None));
+        self.endpoint.use_raw_socket({
+            let local_port = local_port.clone();
+            move |socket| { 
+                local_port.set(Some(socket.get_local_port()));
+            }
+        });
+        local_port.get().unwrap()
+    }
+
     /// Manually create a client via a Quinn endpoint and config.
     ///
     /// The ALPN MUST be set to [ALPN].

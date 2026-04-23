@@ -3,3 +3,9 @@ rustflags = ["--cfg=web_sys_unstable_apis"]
 
 [target.wasm32-unknown-unknown]
 runner = "wasm-bindgen-test-runner"
+
+[net]
+# Seems to be required for the 'quinn' fork,
+# used by 'web-transport-quinn',
+# to be accessible from GitHub?
+git-fetch-with-cli = true
